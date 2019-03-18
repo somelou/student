@@ -29,21 +29,35 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        initLogin();
+    }
 
+    /*
+    * 初始化
+     */
+    private void initLogin(){
         loginBar=findViewById(R.id.progressBarLogin);
         name=findViewById(R.id.editLoginName);
         pswd=findViewById(R.id.editLoginPassword);
         login=findViewById(R.id.btnLogin);
-
     }
 
-    public void turnToMainActivity(View view) {
+    /*
+    * 当用户名或密码错误之后
+     */
+    private void reInitForWrong(){
+        name.setText(null);
+        pswd.setText(null);
+        login.setClickable(true);
+    }
+
+    //
+    public void loginToMainActivity(View view) {
         //启动线程
         login.setClickable(false);
         loginBar.setVisibility(View.VISIBLE);
         MyThread toLogin=new MyThread();
         toLogin.start();
-
     }
 
 /*    Handler handler=new Handler(){
@@ -80,9 +94,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             //Toasty.success(LoginActivity.this.getApplicationContext(),"Login successfully!",Toasty.LENGTH_SHORT).show();
         }else{
-            name.setText(null);
-            pswd.setText(null);
-            login.setClickable(true);
+            reInitForWrong();
             Toasty.error(LoginActivity.this.getApplicationContext(),"用户名或密码错误",Toasty.LENGTH_SHORT).show();
         }
     }

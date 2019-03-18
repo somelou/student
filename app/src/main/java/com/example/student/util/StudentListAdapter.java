@@ -13,7 +13,7 @@ import com.example.student.bean.Student;
 import java.util.ArrayList;
 
 /**
- * Created by Quoc Nguyen on 13-Dec-16.
+ * StudentItem单项适配器
  */
 
 public class StudentListAdapter extends BaseAdapter {

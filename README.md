@@ -2,6 +2,8 @@
 
 一个android初学者的demo app，简单学生信息管理应用
 
+用户名：admin，密码：123456
+
 ## 环境
 
 IDE:Android Studio
@@ -68,7 +70,14 @@ jdk:1.8
 
 ## 还存在的问题
 
-1. MainActivity中刷新(获得全部数据)和查询（获得部分数据）的两个操纵数据库的方法只能写在MainActivity下，当我把他们改到DatabaseHelper类中，它们可以获取数据，但不能获取传递过去的list的值。
+1. ~~MainActivity中刷新(获得全部数据)和查询（获得部分数据）的两个操纵数据库的方法只能写在MainActivity下，当我把他们改到DatabaseHelper类中，它们可以获取数据，但不能获取传递过去的list的值。~~
+
+   > 使用**adapter.notifyDataSetChanged()**时，必须保证传进**Adapter**的数据List是**同一个List**而不能是其他对象，否则**无法更新listview**。
+   > 即，你可以调用List的add()，remove(),clear()，addAll()等方法，这种情况下，List指向的始终是你**最开始new出来的ArrayList**，**然后调用adapter.notifyDataSetChanged()**方法，可以**更新ListView**；
+   > 但是如果你**重新new了一个ArrayList**（*重新申请了堆内存*），那么这时候，List就**指向了另外一个ArrayLIst**，这时调用adapter.notifyDataSetChanged()方法，就**无法刷新listview**了。
+
 2. 登录界面很呆，以后把用户信息也保存到数据库，并且可以记住登录。
+
 3. 随机生成的头像无法保存到数据库中；头像背景色根据id变化更好。
+
 4. 类和方法的结构非常混乱，需要简单重构。

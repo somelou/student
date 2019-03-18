@@ -19,7 +19,7 @@
     <string name="edit_student_no">输入你的学号</string>
     <string name="edit_student_collage">选择你的学院</string>
     <string name="edit_student_speciality">选择你的专业</string>
-    <string name="edit_student_birthday">比如：1970&#8211;01&#8211;01</string>
+    <string name="edit_student_birthday">1970&#8211;01&#8211;01</string>
     <string name="edit_query">输入你想查询的内容</string>
 
     <string name="radio_button_male">男</string>

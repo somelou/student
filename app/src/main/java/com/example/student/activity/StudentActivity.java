@@ -12,13 +12,13 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import com.example.student.R;
 import com.example.student.bean.Student;
 import com.example.student.util.CollageSelectedListener;
 import com.example.student.util.DatabaseHelper;
+import com.example.student.util.GiveBackByValue;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,15 +43,17 @@ public class StudentActivity extends AppCompatActivity implements DatePickerDial
     String fender;
 
     DatabaseHelper dbHelper;
+    GiveBackByValue giveBackByValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
 
-        init();
+        initStudent();
+        fromWhichAction();
 
-        //跳出DatePickerDialog
+        //点击跳出DatePickerDialog
         editBirthday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,22 +67,10 @@ public class StudentActivity extends AppCompatActivity implements DatePickerDial
                 }
             }
         });
-        //接收参数
-        Intent i = getIntent();
-        Student student = i.getParcelableExtra(MainActivity.BTN_UPDATE);
-        if (student != null) {
-            TAG = "UPDATE";
-            initUpdateValue(student);
-            System.out.println("in update activity, stu id=" + student.getStuID());
-        } else {
-            TAG = "ADD";
-        }
 
         //二级联动
         spinnerCollage.setOnItemSelectedListener(new CollageSelectedListener(spinnerSpeciality));
-//
-//        TextView tv = findViewById(R.id.tv);
-//        tv.setText("姓名:" + student.getName() + "--年龄:" + student.getAge());
+
 
         //通过RadioGroup的setOnCheckedChangeListener（）来监听选中哪一个单选按钮
         radioFender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -138,27 +128,11 @@ public class StudentActivity extends AppCompatActivity implements DatePickerDial
 
     }
 
-    private String getHobby() {
-
-        StringBuilder sb = new StringBuilder();
-        //遍历集合中的checkBox,判断是否选择，获取选中的文本
-        for (CheckBox checkbox : checkBoxList) {
-            if (checkbox.isChecked()) {
-                sb.append(checkbox.getText().toString() + ",");
-            }
-        }
-        if ("".equals(sb.toString())) {
-            Toast.makeText(getApplicationContext(), "请至少选择一个", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getApplicationContext(), sb.toString(), Toast.LENGTH_SHORT).show();
-        }
-        return sb.toString();
-    }
-
-
-    private void init() {
+    //初始化
+    private void initStudent() {
 
         dbHelper=new DatabaseHelper(getApplicationContext());
+        giveBackByValue=new GiveBackByValue();
 
         editName = findViewById(R.id.editStuName);
         editID = findViewById(R.id.editStuNo);
@@ -184,62 +158,63 @@ public class StudentActivity extends AppCompatActivity implements DatePickerDial
         btnSubmit = findViewById(R.id.buttonSubmit);
     }
 
+    /*
+    * 根据传来的student赋值回form
+     */
     private void initUpdateValue(Student stu) {
         editName.setText(stu.getStuName());
 
         editID.setText(String.valueOf(stu.getStuID()));
         editID.setFocusable(false);
 
-        fender=stu.getStuFender();//因为radioButton根据改变select来获取值，直接set会让fender为null
-        setRadioSelectedByValue(radioFender,fender);
+        //因为radioButton根据改变select来获取值，直接set会让fender为null
+        fender=stu.getStuFender();
+        giveBackByValue.setRadioSelectedByValue(radioFender,fender);
 
-        setSpinnerItemSelectedByValue(spinnerCollage, stu.getStuCollage());
-        setSpinnerItemSelectedByValue(spinnerSpeciality, stu.getStuSpeciality());
+        giveBackByValue.setSpinnerItemSelectedByValue(spinnerCollage, stu.getStuCollage());
+        giveBackByValue.setSpinnerItemSelectedByValue(spinnerSpeciality, stu.getStuSpeciality());
 
-        setCheckBoxSelectedByValue(checkBoxList, stu.getStuHobby());
+        giveBackByValue.setCheckBoxSelectedByValue(checkBoxList, stu.getStuHobby());
 
         editBirthday.setText(stu.getStuBirthday());
     }
 
-    private void setRadioSelectedByValue(RadioGroup radioGroup,String value){
-        if (value.equals("男")) {
-            radioGroup.check(R.id.radioButtonMale);
+    /*
+     *判断动作来源，并产生对应反应
+     */
+    private void fromWhichAction(){
+        //接收参数
+        Intent i = getIntent();
+        Student student = i.getParcelableExtra(MainActivity.BTN_UPDATE);
+        //如果接受的参数不为空，说明来自addButton
+        if (student != null) {
+            TAG = "UPDATE";
+            initUpdateValue(student);
+            //System.out.println("in update activity, stu id=" + student.getStuID());
         } else {
-            radioGroup.check(R.id.radioButtonFemale);
+            TAG = "ADD";
         }
     }
 
-    /*根据值设置checkbox默认选中
-     * @param checklist
-     * @param value
+    /*
+     * 得到所有选中的checkbox的值
      */
-    private void setCheckBoxSelectedByValue(List<CheckBox> checklist, String value) {
-        String[] oldHobby = value.split(",");
-        for (String item : oldHobby) {
-            for (CheckBox checkbox : checklist) {
-                if (checkbox.getText().toString().equals(item)) {
-                    checkbox.setChecked(true);
-                }
+    private String getHobby() {
+
+        StringBuilder sb = new StringBuilder();
+        //遍历集合中的checkBox,判断是否选择，获取选中的文本
+        for (CheckBox checkbox : checkBoxList) {
+            if (checkbox.isChecked()) {
+                sb.append(checkbox.getText().toString() + ",");
             }
         }
-    }
-
-    /* 根据值, 设置spinner默认选中:
-     * @param spinner
-     * @param value
-     */
-    private void setSpinnerItemSelectedByValue(Spinner spinner, String value) {
-        SpinnerAdapter apsAdapter = spinner.getAdapter(); //得到SpinnerAdapter对象
-        int k = spinner.getCount();
-        System.out.println("spinner items count:" + k);
-        for (int i = 0; i < k; i++) {
-            if (value.equals(apsAdapter.getItem(i).toString())) {
-                spinner.setSelection(i, true);// 默认选中项
-                break;
-            }
+        if ("".equals(sb.toString())) {
+            Toast.makeText(getApplicationContext(), "请至少选择一个", Toast.LENGTH_SHORT).show();
         }
+        return sb.toString();
     }
 
+    //传回选中的日期
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         String desc=year+"-"+(month+1)+"-"+dayOfMonth;

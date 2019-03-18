@@ -165,9 +165,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     * @param query
     * @return list
      */
-    public ArrayList<Student> getQueryData(String query){
+    public ArrayList<Student> getQueryData(ArrayList<Student> studentArrayList,String query){
         db=getReadableDatabase();
-        ArrayList<Student> list = new ArrayList<>();
         Cursor cursor = getData("select * from stu where name like '%"+query+"%' or "+"name like '%"+query+"%' or "+"name like '%"+query+"%'");
         //让游标从表头游到表尾,并把数据存放到list中
         while (cursor.moveToNext()) {
@@ -176,10 +175,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String stuCollage = cursor.getString(cursor.getColumnIndex("collage"));
             String stuSpeciality = cursor.getString(cursor.getColumnIndex("speciality"));
             System.out.println("after query get name:"+stuName+",stuid:"+stuID);
-            list.add(new Student(stuID, stuName, stuCollage, stuSpeciality));
+            studentArrayList.add(new Student(stuID, stuName, stuCollage, stuSpeciality));
         }
         cursor.close();
-        return list;
+        return studentArrayList;
     }
 
     /**
@@ -189,10 +188,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      *
      * @return list
      */
-/*    public ArrayList<Student> getAllData() {
+    public ArrayList<Student> getAllData(ArrayList<Student> studentArrayList) {
         //可以改成HashMap
         db=getReadableDatabase();
-        ArrayList<Student> list = new ArrayList<Student>();
+        /*使用 adapter.notifyDataSetChanged() 时，必须保证传进 Adapter 的数据 List 是同一个 List
+        而不能是其他对象，否则无法更新 listview。
+        即，你可以调用 List 的 add()， remove()， clear()，addAll() 等方法，
+        这种情况下，List 指向的始终是你最开始 new 出来的 ArrayList ，
+        然后调用 adapter.notifyDataSetChanged() 方法，可以更新 ListView；
+        但是如果你重新 new 了一个 ArrayList（重新申请了堆内存），
+        那么这时候，List 就指向了另外一个 ArrayLIst，
+        这时调用 adapter.notifyDataSetChanged() 方法，就无法刷新 listview 了。*/
+        //ArrayList<Student> list = new ArrayList<Student>();
         Cursor cursor = getData("SELECT * FROM STU");
         //让游标从表头游到表尾,并把数据存放到list中
         while (cursor.moveToNext()) {
@@ -202,10 +209,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String stuSpeciality = cursor.getString(cursor.getColumnIndex("speciality"));
             System.out.println("get name:"+stuName+",stuid:"+stuID);
             //byte[] stuPic = cursor.getBlob(cursor.getColumnIndex("pic"));
-            list.add(new Student(stuID, stuName, stuCollage, stuSpeciality, null));
+            studentArrayList.add(new Student(stuID, stuName, stuCollage, stuSpeciality));
         }
         cursor.close();
-        return list;
-    }*/
+        return studentArrayList;
+    }
 
 }

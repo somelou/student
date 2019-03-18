@@ -8,6 +8,9 @@ import android.graphics.Rect;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
+/*
+* 根据用户名首字母/首字生成默认头像
+ */
 public class CharAvatarView extends AppCompatImageView {
     private static final String TAG = CharAvatarView.class.getSimpleName();
     // 颜色画板集
