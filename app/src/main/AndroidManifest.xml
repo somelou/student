@@ -11,9 +11,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.QueryActivity"></activity>
+        <activity android:name=".activity.QueryActivity">
+
+        </activity>
         <activity android:name=".activity.StudentItemActivity" />
-        <activity android:name=".activity.LoginActivity"></activity>
+        <activity android:name=".activity.LoginActivity">
+
+        </activity>
         <activity
             android:name=".activity.StudentActivity"
             android:parentActivityName=".activity.MainActivity">
