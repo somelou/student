@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">student</string>
+
+    <string name="button_add_stu">添加</string>
+    <string name="button_query_stu">查询</string>
+
+    <string name="menu_add">添加</string>
+    <string name="menu_refresh">刷新</string>
+
+    <string name="text_name">姓名</string>
+    <string name="text_no">学号</string>
+    <string name="text_fender">性别</string>
+    <string name="text_collage">学院</string>
+    <string name="text_speciality">专业</string>
+    <string name="text_hobby">爱好</string>
+    <string name="text_birthday">出生日期</string>
+
+    <string name="edit_student_name">输入你的姓名</string>
+    <string name="edit_student_no">输入你的学号</string>
+    <string name="edit_student_collage">选择你的学院</string>
+    <string name="edit_student_speciality">选择你的专业</string>
+    <string name="edit_student_birthday">比如：1970&#8211;01&#8211;01</string>
+    <string name="edit_query">输入你想查询的内容</string>
+
+    <string name="radio_button_male">男</string>
+    <string name="radio_button_female">女</string>
+
+    <string name="check_hobby_literature">文学</string>
+    <string name="check_hobby_pe">体育</string>
+    <string name="check_hobby_music">音乐</string>
+    <string name="check_hobby_art">美术</string>
+
+    <string name="button_submit_info">提交</string>
+
+    <string name="speciality_cs">计算机学院</string>
+    <string name="speciality_eg">电气学院</string>
+
+
+    <string name="edit_login_name">请输入账户名或id</string>
+    <string name="edit_login_password">请输入密码</string>
+    <string name="button_login">登录</string>
+
+
+    <string name="toast_message">Toast message</string>
+</resources>

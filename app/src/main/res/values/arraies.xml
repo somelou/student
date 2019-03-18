@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinner_collage">
+        <item>请选择</item>
+        <item>计算机学院</item>
+        <item>电气学院</item>
+    </string-array>
+
+    <string-array name="spinner_speciality">
+        <item>请选择</item>
+        <item>软件工程</item>
+        <item>计算机科学</item>
+        <item>物联网</item>
+        <item>eg1</item>
+        <item>eg2</item>
+    </string-array>
+
+    <string-array name="spinner_speciality_cs">
+        <item>请选择</item>
+        <item>软件工程</item>
+        <item>计算机科学</item>
+        <item>物联网</item>
+    </string-array>
+    <string-array name="spinner_speciality_eg">
+        <item>请选择</item>
+        <item>eg1</item>
+        <item>eg2</item>
+    </string-array>
+</resources>
