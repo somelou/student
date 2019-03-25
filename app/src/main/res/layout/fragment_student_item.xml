@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.StudentItemActivity">
+    tools:context=".list.StudentItemFragment">
 
-    <com.example.student.util.CharAvatarView
+    <com.example.student.list.CharAvatarView
         android:id="@+id/imageStudentAvatar"
         android:layout_width="80dp"
         android:layout_height="80dp"

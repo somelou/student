@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".student.StudentFragment">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/fromStu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+
+        <TableRow
+            android:id="@+id/rowName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textStuName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_name"
+                android:textAlignment="center"
+                android:textSize="28sp" />
+
+            <EditText
+                android:id="@+id/editStuName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:ems="10"
+                android:hint="@string/edit_student_name"
+                android:inputType="textPersonName"
+                android:lineSpacingExtra="24sp"
+                android:textSize="24sp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/rowNo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rowName">
+
+            <TextView
+                android:id="@+id/textStuNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_no"
+                android:textSize="28sp" />
+
+            <EditText
+                android:id="@+id/editStuNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/edit_student_no"
+                android:inputType="textPersonName"
+                android:textSize="24sp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/rowFender"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rowNo">
+
+            <TextView
+                android:id="@+id/textStuFender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_fender"
+                android:textSize="28sp" />
+
+            <RadioGroup
+                android:id="@+id/buttonGroupFender"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioButtonMale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/radio_button_male"
+                    android:textSize="24sp" />
+
+                <RadioButton
+                    android:id="@+id/radioButtonFemale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/radio_button_female"
+                    android:textSize="24sp" />
+
+            </RadioGroup>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/rowCollage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rowFender">
+
+            <TextView
+                android:id="@+id/textStuCollage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_collage"
+                android:textSize="28sp" />
+
+            <Spinner
+                android:id="@+id/spinnerCollage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:entries="@array/spinner_collage"
+                android:prompt="@string/edit_student_collage"
+                android:spinnerMode="dropdown" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/rowSpeciality"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rowCollage">
+
+            <TextView
+                android:id="@+id/textStuSpeciality"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_speciality"
+                android:textSize="28sp" />
+
+            <Spinner
+                android:id="@+id/spinnerSpeciality"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:entries="@array/spinner_speciality"
+                android:spinnerMode="dropdown" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/rowHobby"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rowSpeciality">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_hobby"
+                android:textSize="28sp" />
+
+            <LinearLayout
+                android:id="@+id/linearLayoutHobby"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/checkLiterature"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/check_hobby_literature"
+                    android:textSize="24sp" />
+
+                <CheckBox
+                    android:id="@+id/checkPE"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/check_hobby_pe"
+                    android:textSize="24sp" />
+
+                <CheckBox
+                    android:id="@+id/checkMusic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/check_hobby_music"
+                    android:textSize="24sp" />
+
+                <CheckBox
+                    android:id="@+id/checkArt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/check_hobby_art"
+                    android:textSize="24sp" />
+            </LinearLayout>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/rowBirthday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rowHobby">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_birthday"
+                android:textSize="28sp"
+                tools:layout_editor_absoluteX="28dp"
+                tools:layout_editor_absoluteY="454dp" />
+
+            <EditText
+                android:id="@+id/editStuBirthday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/text_birthday"
+                android:hint="@string/edit_student_birthday"
+                android:inputType="date"
+                android:textSize="24sp" />
+
+        </TableRow>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/rowButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rowBirthday">
+
+            <Button
+                android:id="@+id/buttonCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="64dp"
+                android:background="@color/colorAccent"
+                android:text="@string/button_cancel"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/buttonSubmit"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="64dp"
+                android:background="@android:color/holo_blue_dark"
+                android:text="@string/button_submit_info"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/buttonCancel"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+</FrameLayout>

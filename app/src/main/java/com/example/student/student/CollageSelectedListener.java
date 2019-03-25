@@ -1,4 +1,4 @@
-package com.example.student.util;
+package com.example.student.student;
 
 import android.view.View;
 import android.widget.AdapterView;
@@ -7,19 +7,32 @@ import android.widget.Spinner;
 
 import com.example.student.R;
 
-/*
-* 二级联动
-* 根据上一个spinner的选择对下一个spinner的内容进行改变
+/**
+ * @description 学院专业二级联动监听器
+ * @author somelou
+ * @date 2019/3/20
+ *
  */
 public class CollageSelectedListener implements AdapterView.OnItemSelectedListener {
 
     private Spinner speciality;
     private ArrayAdapter<CharSequence> adapterSpeciality;
 
+    /**
+     *
+     * @param spinner Spinner
+     */
     public CollageSelectedListener(Spinner spinner) {
         setSpeciality(spinner);
     }
 
+    /**当
+     * 
+     * @param parent AdapterView<?>
+     * @param view View
+     * @param position 位置
+     * @param id 学号
+     */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String str = (String)(parent.getItemAtPosition(position));
@@ -36,11 +49,18 @@ public class CollageSelectedListener implements AdapterView.OnItemSelectedListen
 
     }
 
+    /**
+     * 设置被联动的Spinner
+     * @param spinner Spinner
+     */
     private void setSpeciality(Spinner spinner) {
         speciality = spinner;
     }
 
-    //加载计算机学院专业
+    /**
+     * 加载计算机学院专业
+     * @param parent 父适配器
+     */
     private void loadSpinnerSpecialityCS(AdapterView<?> parent){
         adapterSpeciality=ArrayAdapter.createFromResource(parent.getContext(),R.array.spinner_speciality_cs,R.layout.support_simple_spinner_dropdown_item);
         speciality.setAdapter(adapterSpeciality);
@@ -48,7 +68,10 @@ public class CollageSelectedListener implements AdapterView.OnItemSelectedListen
         //speciality.getResources().getStringArray(R.array.spinner_speciality_cs);
     }
 
-    //加载电气学院专业
+    /**
+     * 加载电气学院专业
+     * @param parent 父适配器
+     */
     private void loadSpinnerSpecialityEG(AdapterView<?> parent){
         //使用res目录下的string.xml资源
         //String[] array=new String[]{"请选择","eg1","eg2"};s

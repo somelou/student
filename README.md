@@ -56,9 +56,9 @@ jdk:1.8
 
 10. 菜单上有两项功能：编辑和删除。
 
-   点击编辑时跳转到ActivityStudent界面，修改学生信息；
+  点击编辑时跳转到ActivityStudent界面，修改学生信息；
 
-   点击删除时，删除该条学生信息，删除之前让用户进行确认。
+  点击删除时，删除该条学生信息，删除之前让用户进行确认。
 
 11. 为程序增加系统菜单，菜单上有：增加、刷新两项功能，用来增加学生和刷新学生列表。目前刷新并没有什么实际功能。
 
@@ -68,6 +68,14 @@ jdk:1.8
 
 14. 在ActivityMain界面上增加一个查询按钮，点击查询按钮，弹出对话框，输入查询关键词，点击确定后开始查询（搜索学生姓名、学院和专业字段）。如果查询到结果，ActivityMain上只保留查询结果；如果没有查询到结果，用Toast提示没有查询到结果。
 
+15. 原来登录成功后会显示的是3秒进度条，现在要求改成：登录成功后，显示一个广告页面（ActivityAds)，页面右上角广告倒计时（5秒），用户也可以点击倒计时跳过广告。
+
+16. 在ActivityMain界面向左划动，就进入ActivityStudent界面，增加一个学生，增加成功后仍然返回ActivityMain界面。
+
+17. 在ActivityStudent界面向右划动，就进入ActivityMain界面（即使当前在ActivityStudent界面只输入了部分信息，没有点击确定按钮）。
+
+18. 在ActivityStudent界面输入了部分信息，向右划动返回ActivityMain界面，然后又向左划动进入ActivityStudent界面，要求此时ActivityStudent界面原来输入的内容不丢失。
+
 ## 还存在的问题
 
 1. ~~MainActivity中刷新(获得全部数据)和查询（获得部分数据）的两个操纵数据库的方法只能写在MainActivity下，当我把他们改到DatabaseHelper类中，它们可以获取数据，但不能获取传递过去的list的值。~~
@@ -76,8 +84,21 @@ jdk:1.8
    > 即，你可以调用List的add()，remove(),clear()，addAll()等方法，这种情况下，List指向的始终是你**最开始new出来的ArrayList**，**然后调用adapter.notifyDataSetChanged()**方法，可以**更新ListView**；
    > 但是如果你**重新new了一个ArrayList**（*重新申请了堆内存*），那么这时候，List就**指向了另外一个ArrayLIst**，这时调用adapter.notifyDataSetChanged()方法，就**无法刷新listview**了。
 
-2. 登录界面很呆，以后把用户信息也保存到数据库，并且可以记住登录。
+2. ~~登录界面很呆~~，以后把用户信息也保存到数据库，并且可以记住登录。
+
+   > 3.25 登录界面增加了记住密码和自动登录。
 
 3. 随机生成的头像无法保存到数据库中；头像背景色根据id变化更好。
 
 4. 类和方法的结构非常混乱，需要简单重构。
+
+5. 在应用了activity+viewpager+fragment后，出现了以下问题：
+
+   1. StudentFragment进行更新之后，能够成功设置"专业"，但是不刷新在界面中；
+   2. "自动登录"后的AdActivity总是出现线程问题；
+   3. 有时选中"update"跳转到StudentFragment不能成功传递数据。
+
+其他：
+
+1. 一些函数的注释和说明尚未写出；
+2. 一些资源文件和函数并没什么用。

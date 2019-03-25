@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="list_stu">信息</string>
+    <string name="add_stu">编辑</string>
+    <string name="app_my">我的</string>
+</resources>

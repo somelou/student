@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#E94E86</color>
 
     <color name="defaultTextColor">#FFFFFF</color>
     <color name="errorColor">#D50000</color>
@@ -10,4 +10,33 @@
     <color name="successColor">#388E3C</color>
     <color name="warningColor">#FFA900</color>
     <color name="normalColor">#353A3E</color>
+
+    <color name="transparent_half">#A0000000</color>
+    <color name="transparent_half_orange">#a0ec6f1a</color>
+
+
+    <color name="top_bar_normal_bg">#ec6f1a</color>
+
+    <color name="bg_normal_gray">#E0E0E0</color>
+
+    <color name="line">#e0e0e0</color>
+    <color name="tv_gray_litter">#FAF0E6</color>
+    <color name="tv_gray_normal">#c0c0c0</color>
+    <color name="tv_gray_deep">#818181</color>
+    <color name="tv_gray_lit">#50B1B1B1</color>
+    <color name="tv_gray">@android:color/darker_gray</color>
+    <color name="tv_color">#ffffff</color>
+    <color name="list_glide">#50E0E0E0</color>
+
+
+    <!-- 公司主题色 -->
+    <color name="orange_main">#ec6f1a</color>
+    <color name="orange_light">#ffd39b</color>
+    <color name="orange_deep">#ff6f3a</color>
+    <color name="orange_most">#C76114</color>
+    <color name="orange_litter">#80aa6136</color>
+
+    <color name="tab_checked">#3F51B5</color>
+    <color name="tab_unchecked">#757575</color>
+
 </resources>

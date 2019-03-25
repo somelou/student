@@ -1,5 +1,6 @@
-package com.example.student.util;
+package com.example.student.student;
 
+import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -9,8 +10,11 @@ import com.example.student.R;
 
 import java.util.List;
 
-/*
-* 根据View类型和数据库中的值传回form
+
+/**
+ * @description 根据View类型和数据库中的值传回form
+ * @author somelou
+ * @date 2019/3/20
  */
 public class GiveBackByValue {
 
@@ -34,12 +38,17 @@ public class GiveBackByValue {
      * @param value
      */
     public void setCheckBoxSelectedByValue(List<CheckBox> checklist, String value) {
-
-        String[] oldHobby = value.split(",");
-        for (String item : oldHobby) {
+        if(value==null){
             for (CheckBox checkbox : checklist) {
-                if (checkbox.getText().toString().equals(item)) {
-                    checkbox.setChecked(true);
+                    checkbox.setChecked(false);
+            }
+        }else {
+            String[] oldHobby = value.split(",");
+            for (String item : oldHobby) {
+                for (CheckBox checkbox : checklist) {
+                    if (checkbox.getText().toString().equals(item)) {
+                        checkbox.setChecked(true);
+                    }
                 }
             }
         }
@@ -55,9 +64,12 @@ public class GiveBackByValue {
         //System.out.println("spinner items count:" + k);
         for (int i = 0; i < k; i++) {
             if (value.equals(apsAdapter.getItem(i).toString())) {
-                spinner.setSelection(i, true);// 默认选中项
+                System.out.println("spinner has items,"+i+":"+apsAdapter.getItem(i).toString());
+                ((BaseAdapter) apsAdapter).notifyDataSetChanged();
+                spinner.setSelection(i);// 默认选中项
                 break;
             }
         }
+
     }
 }

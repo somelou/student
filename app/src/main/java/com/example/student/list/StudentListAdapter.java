@@ -1,4 +1,4 @@
-package com.example.student.util;
+package com.example.student.list;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,7 +13,9 @@ import com.example.student.bean.Student;
 import java.util.ArrayList;
 
 /**
- * StudentItem单项适配器
+ * @description StudentItem单项适配器
+ * @author somelou
+ * @date 2019/3/20
  */
 
 public class StudentListAdapter extends BaseAdapter {
@@ -22,6 +24,12 @@ public class StudentListAdapter extends BaseAdapter {
     private int layout;
     private ArrayList<Student> studentsList;
 
+    /**
+     *
+     * @param context Context
+     * @param layout int
+     * @param studentsList ArrayList<Student>
+     */
     public StudentListAdapter(Context context, int layout, ArrayList<Student> studentsList) {
         this.context = context;
         this.layout = layout;
@@ -43,11 +51,21 @@ public class StudentListAdapter extends BaseAdapter {
         return position;
     }
 
+    /**
+     * 私有类
+     */
     private class ViewHolder{
         CharAvatarView imageAvatarView;
         TextView txtName, txtId,txtCollage,txtSpeciality;
     }
 
+    /**
+     * 将得到的信息显示在Adapter中
+     * @param position int
+     * @param view View
+     * @param viewGroup ViewGroup
+     * @return View
+     */
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
 

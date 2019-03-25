@@ -3,7 +3,11 @@ package com.example.student.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-
+/**
+ * @description student bean
+ * @author somelou
+ * @date 2019/3/20
+ */
 public class Student implements Parcelable {
 
     private long stuID;
@@ -16,7 +20,7 @@ public class Student implements Parcelable {
 
     public Student(){}
 
-    public Student(Parcel in) {
+    private Student(Parcel in) {
         this.stuID=in.readLong();
         this.stuName=in.readString();
         this.stuFender=in.readString();
@@ -105,8 +109,8 @@ public class Student implements Parcelable {
         return 0;
     }
 
-    /*
-    writeToParcel()方法中需要调用Parcel的writeXxx()方法 , 将Student类中的字段一一写出
+    /**
+     * writeToParcel()方法中需要调用Parcel的writeXxx()方法 , 将Student类中的字段一一写出
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
@@ -120,12 +124,12 @@ public class Student implements Parcelable {
         //dest.writeByteArray(stuPic);
     }
 
-    /*
-    我们还必须在Student类中提供一个名为CREATOR的常量
-    这里创建了Parcelable.Creator接口的一个实现 , 并将泛型指定为Student .
-    接着需要重写createFromParcel()和newArray()这两个方法 .
-    在createFromParcel()方法中我们要去创建一个Student对象 .
-    而newArray()方法只需要new出一个Student数组 , 并传入size()作为数据的大小就可以了 .
+    /**
+     * 我们还必须在Student类中提供一个名为CREATOR的常量
+     * 这里创建了Parcelable.Creator接口的一个实现 , 并将泛型指定为Student .
+     * 接着需要重写createFromParcel()和newArray()这两个方法 .
+     * 在createFromParcel()方法中我们要去创建一个Student对象 .
+     * 而newArray()方法只需要new出一个Student数组 , 并传入size()作为数据的大小就可以了 .
      */
     public static final Creator<Student> CREATOR = new Creator<Student>() {
         @Override

@@ -1,4 +1,4 @@
-package com.example.student.util;
+package com.example.student.list;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -8,8 +8,10 @@ import android.graphics.Rect;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
-/*
-* 根据用户名首字母/首字生成默认头像
+/**
+ * @description 根据用户名首字母/首字生成默认头像
+ * @author somelou
+ * @date 2019/3/20
  */
 public class CharAvatarView extends AppCompatImageView {
     private static final String TAG = CharAvatarView.class.getSimpleName();
@@ -65,10 +67,10 @@ public class CharAvatarView extends AppCompatImageView {
             int color = colors[charHash % colors.length];
             // 画圆
             mPaintBackground.setColor(color);
-            canvas.drawCircle(getWidth() / 2, getWidth() / 2, getWidth() / 2, mPaintBackground);
+            canvas.drawCircle((float)getWidth() / 2, (float)getWidth() / 2, (float)getWidth() / 2, mPaintBackground);
             // 写字
             mPaintText.setColor(Color.WHITE);
-            mPaintText.setTextSize(getWidth() / 2);
+            mPaintText.setTextSize((float)getWidth() / 2);
             mPaintText.setStrokeWidth(3);
             mPaintText.getTextBounds(text, 0, 1, mRect);
             // 垂直居中
@@ -76,7 +78,7 @@ public class CharAvatarView extends AppCompatImageView {
             int baseline = (getMeasuredHeight() - fontMetrics.bottom - fontMetrics.top) / 2;
             // 左右居中
             mPaintText.setTextAlign(Paint.Align.CENTER);
-            canvas.drawText(text, getWidth() / 2, baseline, mPaintText);
+            canvas.drawText(text, (float)getWidth() / 2, baseline, mPaintText);
         }
     }
 
