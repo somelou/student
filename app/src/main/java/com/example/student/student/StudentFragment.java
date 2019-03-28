@@ -49,15 +49,13 @@ public class StudentFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "BIRTHDAY";
-    private static final String ARG_PARAM2 = "Student";
 
     // TODO: Rename and change types of parameters
     private String day;
-    private Student student;
 
     private DatabaseHelper dbHelper;
 
-    static String TAG;
+    String TAG;
 
     EditText editName, editID, editBirthday;
     RadioGroup radioFender;
@@ -84,7 +82,7 @@ public class StudentFragment extends Fragment {
      * @return A new instance of fragment StudentFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static StudentFragment newInstance(String day, Student student) {
+    public static StudentFragment newInstance(String day) {
         StudentFragment fragment = new StudentFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, day);
@@ -108,15 +106,11 @@ public class StudentFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_student, container, false);
         initStudent(view);
         fromWhichAction();
-
         return view;
     }
 
     @Override
-    public void onViewCreated(@NonNull final View view, Bundle savedInstanceState) {
-
-        //二级联动
-        spinnerCollage.setOnItemSelectedListener(new CollageSelectedListener(spinnerSpeciality));
+    public void onViewCreated(@NonNull final View view, Bundle savedInstanceState) throws NumberFormatException{
 
         //点击跳出DatePickerDialog
         editBirthday.setOnClickListener(new View.OnClickListener() {
@@ -150,8 +144,7 @@ public class StudentFragment extends Fragment {
                 //通过radioGroup.getCheckedRadioButtonId()来得到选中的RadioButton的ID，从而得到RadioButton进而获取选中值
                 try {
                     RadioButton rb = view.findViewById(radioFender.getCheckedRadioButtonId());
-                    String getFender = rb.getText().toString();
-                    return getFender;
+                    return rb.getText().toString();
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
@@ -163,6 +156,7 @@ public class StudentFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 reSetOriginalView();
+                onResume();
             }
         });
 
@@ -171,6 +165,7 @@ public class StudentFragment extends Fragment {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean success=true;
                 //编辑
                 if (TAG.equals("UPDATE")) {
                     try {
@@ -183,13 +178,10 @@ public class StudentFragment extends Fragment {
                                 getHobby(),
                                 editBirthday.getText().toString().trim()
                         );
-                    } catch (SQLException e) {
-                        Toasty.error(getContext(), "更新出现了问题").show();
+                    } catch (NumberFormatException e) {
+                        success=false;
                     }
-                    Toasty.success(getContext(), "Update successfully!", Toast.LENGTH_SHORT, true).show();
-                    //Toast.makeText(getApplicationContext(), "Update successfully!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getContext(), MainActivity.class);
-                    startActivity(intent);
+                    isOperationSuccess(success,TAG);
                 } else
                     //添加
                     if (TAG.equals("ADD")) {
@@ -203,16 +195,15 @@ public class StudentFragment extends Fragment {
                                     getHobby(),
                                     editBirthday.getText().toString().trim()
                             );
-                        } catch (SQLException e) {
-                            Toasty.error(getContext(), "插入出现了问题").show();
+                        } catch (NumberFormatException e) {
+                            success=false;
                         }
-                        Toasty.success(getContext(), "Add successfully!", Toast.LENGTH_SHORT, true).show();
-                        Intent intent = new Intent(getContext(), MainActivity.class);
-                        startActivity(intent);
+                        isOperationSuccess(success,TAG);
                     }
-
             }
         });
+
+        fromWhichAction();
     }
 
     /**
@@ -247,6 +238,32 @@ public class StudentFragment extends Fragment {
         btnCancel = view.findViewById(R.id.buttonCancel);
         btnSubmit = view.findViewById(R.id.buttonSubmit);
     }
+    /**
+     * 判断动作来源，并产生对应反应
+     */
+    private void fromWhichAction() {
+        System.out.println("TAG :"+TAG);
+
+        Student student = ((MainActivity) Objects.requireNonNull(getActivity())).getStudentToUpdate();
+            if (student != null) {
+                System.out.println("(on resume)get stu from activity in update, name:" + student.getStuName());
+            }
+
+
+        //如果接受的参数不为空，说明来自addButton
+        if (student != null) {
+            TAG = "UPDATE";
+            spinnerCollage.setOnItemSelectedListener(new CollageSelectedListener(spinnerSpeciality,TAG));
+            initUpdateValue(student);
+            this.TAG=CollageSelectedListener.getTAG();
+            //System.out.println("in update activity, stu id=" + student.getStuID());
+        } else {
+            System.out.println("no student info in student fragment");
+            TAG = "ADD";
+            spinnerCollage.setOnItemSelectedListener(new CollageSelectedListener(spinnerSpeciality,TAG));
+            //reSetOriginalView();
+        }
+    }
 
     /**
      * 根据传来的student赋值回form.
@@ -257,51 +274,26 @@ public class StudentFragment extends Fragment {
         editName.setText(stu.getStuName());
 
         editID.setText(valueOf(stu.getStuID()));
-        editID.setFocusable(false);
+        editID.setEnabled(false);
 
         //因为radioButton根据改变select来获取值，直接set会让fender为null
         fender = stu.getStuFender();
         giveBackByValue.setRadioSelectedByValue(radioFender, fender);
-
         giveBackByValue.setSpinnerItemSelectedByValue(spinnerCollage, stu.getStuCollage());
-
-        spinnerCollage.setOnItemSelectedListener(new CollageSelectedListener(spinnerSpeciality));
-        System.out.println("get stu speciality in list:" + stu.getStuSpeciality());
         giveBackByValue.setSpinnerItemSelectedByValue(spinnerSpeciality, stu.getStuSpeciality());
-        spinnerSpeciality.invalidate();
-        System.out.println("spinner check item in fragment:" + spinnerSpeciality.getSelectedItem().toString().trim());
-
         giveBackByValue.setCheckBoxSelectedByValue(checkBoxList, stu.getStuHobby());
 
         editBirthday.setText(stu.getStuBirthday());
     }
 
     /**
-     * 判断动作来源，并产生对应反应
+     * 重置所有组件
      */
-    private void fromWhichAction() {
-
-        student = ((MainActivity) Objects.requireNonNull(getActivity())).getStudentToUpdate();
-        if (student != null) {
-            System.out.println("(on init)get stu from activity in update, name:" + student.getStuName());
-        }
-
-        //如果接受的参数不为空，说明来自addButton
-        if (student != null) {
-            TAG = "UPDATE";
-            initUpdateValue(student);
-            //System.out.println("in update activity, stu id=" + student.getStuID());
-        } else {
-            System.out.println("no student in student fragment");
-            TAG = "ADD";
-        }
-    }
-
     private void reSetOriginalView() {
         editName.setText(null);
 
         editID.setText(null);
-        editID.setFocusable(true);
+        editID.setEnabled(true);
 
         radioFender.clearCheck();
         spinnerCollage.setSelection(0, true);
@@ -310,7 +302,22 @@ public class StudentFragment extends Fragment {
         giveBackByValue.setCheckBoxSelectedByValue(checkBoxList, null);
 
         editBirthday.setText(null);
+    }
 
+    /**
+     * 判断操作是否成功并生成相应吐司
+     * @param success boolean
+     * @param tag TAG
+     */
+    private void isOperationSuccess(boolean success,String tag){
+        if(success){
+            Toasty.success(Objects.requireNonNull(getContext()), tag+"successfully!", Toast.LENGTH_SHORT, true).show();
+            //Toast.makeText(getApplicationContext(), "Update successfully!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+        }else {
+            Toasty.error(Objects.requireNonNull(getContext()), tag+"出现了问题").show();
+        }
     }
 
     /**
@@ -381,14 +388,6 @@ public class StudentFragment extends Fragment {
         //spinnerCollage.setOnItemSelectedListener(new CollageSelectedListener(spinnerSpeciality));
         fromWhichAction();
         super.onResume();
-
-    }
-
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        student = null;
     }
 
 }

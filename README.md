@@ -74,7 +74,9 @@ jdk:1.8
 
 17. 在ActivityStudent界面向右划动，就进入ActivityMain界面（即使当前在ActivityStudent界面只输入了部分信息，没有点击确定按钮）。
 
-18. 在ActivityStudent界面输入了部分信息，向右划动返回ActivityMain界面，然后又向左划动进入ActivityStudent界面，要求此时ActivityStudent界面原来输入的内容不丢失。
+18. 增加了BottomNavigationView，将原来的Activity改为Fragment。
+
+19. 增加了记住密码和自动登录。
 
 ## 还存在的问题
 
@@ -94,9 +96,17 @@ jdk:1.8
 
 5. 在应用了activity+viewpager+fragment后，出现了以下问题：
 
-   1. StudentFragment进行更新之后，能够成功设置"专业"，但是不刷新在界面中；
-   2. "自动登录"后的AdActivity总是出现线程问题；
+   1. ~~StudentFragment进行更新之后，能够成功设置"专业"，但是不刷新在界面中；~~
+
+      > 原来因为给spinner设置了监听器，来控制专业的entry。于是在initUpdateValue方法之后，在监听器的改变之下，spinnerSpeciality又被重新设置了。给设置监听器的方法加入了一个TAG参数，用来判断，使UPDATE情况下不执行。
+
+   2. ~~"自动登录"后的AdActivity总是出现线程问题；~~
+
+      > AdActivity中handler = new Handler()改为CountDown()方法之前
+
    3. 有时选中"update"跳转到StudentFragment不能成功传递数据。
+
+      > 去掉重写onHiddenChanged()方法中的student=null，偶发性降低了，但还是有时会出现。
 
 其他：
 

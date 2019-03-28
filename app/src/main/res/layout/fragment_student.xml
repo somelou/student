@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/text_name"
                 android:textAlignment="center"
-                android:textSize="28sp" />
+                android:textSize="24sp" />
 
             <EditText
                 android:id="@+id/editStuName"
@@ -70,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/text_no"
-                android:textSize="28sp" />
+                android:textSize="24sp" />
 
             <EditText
                 android:id="@+id/editStuNo"
@@ -98,7 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/text_fender"
-                android:textSize="28sp" />
+                android:textSize="24sp" />
 
             <RadioGroup
                 android:id="@+id/buttonGroupFender"
@@ -141,7 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/text_collage"
-                android:textSize="28sp" />
+                android:textSize="24sp" />
 
             <Spinner
                 android:id="@+id/spinnerCollage"
@@ -168,7 +168,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/text_speciality"
-                android:textSize="28sp" />
+                android:textSize="24sp" />
 
             <Spinner
                 android:id="@+id/spinnerSpeciality"
@@ -194,7 +194,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/text_hobby"
-                android:textSize="28sp" />
+                android:textSize="24sp" />
 
             <LinearLayout
                 android:id="@+id/linearLayoutHobby"
@@ -248,7 +248,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/text_birthday"
-                android:textSize="28sp"
+                android:textSize="24sp"
                 tools:layout_editor_absoluteX="28dp"
                 tools:layout_editor_absoluteY="454dp" />
 
@@ -283,7 +283,7 @@
                 android:layout_marginStart="64dp"
                 android:background="@color/colorAccent"
                 android:text="@string/button_cancel"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -297,7 +297,7 @@
                 android:background="@android:color/holo_blue_dark"
                 android:text="@string/button_submit_info"
                 android:textAlignment="center"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/buttonCancel"
                 app:layout_constraintEnd_toEndOf="parent" />
 

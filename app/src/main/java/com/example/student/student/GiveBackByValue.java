@@ -64,9 +64,11 @@ public class GiveBackByValue {
         //System.out.println("spinner items count:" + k);
         for (int i = 0; i < k; i++) {
             if (value.equals(apsAdapter.getItem(i).toString())) {
-                System.out.println("spinner has items,"+i+":"+apsAdapter.getItem(i).toString());
-                ((BaseAdapter) apsAdapter).notifyDataSetChanged();
-                spinner.setSelection(i);// 默认选中项
+                //System.out.println("spinner has items,"+i+":"+apsAdapter.getItem(i).toString());
+                //((BaseAdapter) apsAdapter).notifyDataSetChanged();
+                spinner.setSelection(i,true);// 默认选中项
+                //count++;
+                //System.out.println("setSpinnerItemSelectedByValue has used "+count+" times, text is "+spinner.getSelectedItem().toString());
                 break;
             }
         }

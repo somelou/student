@@ -36,15 +36,16 @@ public class MainActivity extends AppCompatActivity implements ListStuFragment.O
 
     public static final String RESULT_QUERY = "QUERY";
     public static final String RESULT_ALL = "ALL";
-    public static final String FROM_ME="IN_MY";
+    public static final String FROM_ME = "IN_MY";
 
     private ViewPager viewPager;
     private MenuItem menuItem;
     private BottomNavigationView bottomNavigationView;
 
-    String birthday;Student student;
+    String birthday;
+    Student student;
 
-    String updateKind,condition;
+    String updateKind, condition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,13 +104,11 @@ public class MainActivity extends AppCompatActivity implements ListStuFragment.O
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(ListStuFragment.newInstance("1","2"));
-        adapter.addFragment(StudentFragment.newInstance(birthday,student));
-        adapter.addFragment(MyFragment.newInstance("1","2"));
+        adapter.addFragment(ListStuFragment.newInstance("1", "2"));
+        adapter.addFragment(StudentFragment.newInstance(birthday));
+        adapter.addFragment(MyFragment.newInstance("1", "2"));
         viewPager.setAdapter(adapter);
     }
-
-
 
 
     //该方法主要是从fragment 向activity传递数据
@@ -185,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements ListStuFragment.O
             public void onClick(View v) {
                 try {
                     //执行查询
-                    condition=queryInput.getText().toString();
+                    condition = queryInput.getText().toString();
                     makeFragmentRefresh(0);
                     //updateStuListData(RESULT_QUERY, queryInput.getText().toString());
                     //关闭dialog
@@ -197,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements ListStuFragment.O
             }
         });
     }
+
     /**
      * 当用户点击菜单项时自动调用的方法
      *
@@ -214,14 +214,14 @@ public class MainActivity extends AppCompatActivity implements ListStuFragment.O
         int menuItemId = item.getItemId();
         switch (menuItemId) {
             case R.id.menu_add_stu:
-                updateKind=RESULT_QUERY;
+                updateKind = RESULT_QUERY;
                 showDialogQuery(this);
                 //turnToAddStuInfo(findViewById(R.id.menu_add_stu));
                 System.out.println("=====add====");
                 break;
             case R.id.menu_refresh_stu:
-                updateKind=RESULT_ALL;
-                condition=null;
+                updateKind = RESULT_ALL;
+                condition = null;
                 makeFragmentRefresh(0);
                 //updateStuListData(RESULT_ALL, null);
                 System.out.println("====refresh=======");
@@ -232,14 +232,16 @@ public class MainActivity extends AppCompatActivity implements ListStuFragment.O
 
     /**
      * 在list中点击update，把选中的student传值给activity，然后转到student页
+     *
      * @param student
      * @param pageNum
      */
     @Override
-    public void SendValueFromStudentMessage(Student student, int pageNum){
-        this.student=student;
-        System.out.println("get student from list stu fragment name:"+student.getStuName());
+    public void SendValueFromStudentMessage(Student student, int pageNum) {
+        this.student = student;
+        System.out.println("get student from list stu fragment name:" + student.getStuName());
         makeFragmentRefresh(pageNum);
+        this.student=null;
     }
 
 
@@ -250,22 +252,20 @@ public class MainActivity extends AppCompatActivity implements ListStuFragment.O
         return student;
     }
 
-    public Map<String,String> getListConditionToList(){
-        Map<String,String> map=new HashMap<>();
-        map.put("kind",updateKind);
-        map.put("condition",condition);
+    public Map<String, String> getListConditionToList() {
+        Map<String, String> map = new HashMap<>();
+        map.put("kind", updateKind);
+        map.put("condition", condition);
         return map;
     }
 
 
-    private void makeFragmentRefresh(int pageNum){
-        if (viewPager.getAdapter() != null) {
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            List<Fragment> fragments = fm.getFragments();
-            fragments.get(pageNum).onResume();
-            ft.commit();
-        }
+    private void makeFragmentRefresh(int pageNum) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        List<Fragment> fragments = fm.getFragments();
+        fragments.get(pageNum).onResume();
+        ft.commit();
         viewPager.setCurrentItem(pageNum);
     }
 

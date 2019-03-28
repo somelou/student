@@ -33,16 +33,6 @@ public class AdActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ad);
         initView();
 
-        //倒计时
-        Countdown();
-
-        go.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                turnToMainActivity();
-            }
-        });
-
         handler = new Handler(){
             public void handleMessage(Message msg){
                 switch(msg.what){
@@ -56,6 +46,15 @@ public class AdActivity extends AppCompatActivity {
                 }
             }
         };
+        //倒计时
+        Countdown();
+
+        go.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                turnToMainActivity();
+            }
+        });
 
     }
 

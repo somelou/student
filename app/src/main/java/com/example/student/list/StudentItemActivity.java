@@ -10,7 +10,7 @@ import com.example.student.R;
  * @author somelou
  * @date 2019/3/20
  */
-public class StudentItemFragment extends AppCompatActivity {
+public class StudentItemActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

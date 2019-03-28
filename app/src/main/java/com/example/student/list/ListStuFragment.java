@@ -197,8 +197,10 @@ public class ListStuFragment extends Fragment {
         if (kind == null || kind.equals(RESULT_ALL)) {
             listStuInfo = dbHelper.getAllData(listStuInfo);
         } else if (kind.equals(RESULT_QUERY)) {
-            listStuInfo = dbHelper.getQueryData(listStuInfo, condition);
-            showToastyForListResult(listStuInfo);
+            if(condition!=null) {
+                listStuInfo = dbHelper.getQueryData(listStuInfo, condition);
+                showToastyForListResult(listStuInfo);
+            }
         }
         if(listStuInfo.isEmpty()){
             listStuInfo = dbHelper.getAllData(listStuInfo);

@@ -120,8 +120,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return Cursor
      */
     private Cursor getData(String sql) throws SQLException{
-        db= getReadableDatabase();
-        return db.rawQuery(sql, null);
+        return getReadableDatabase().rawQuery(sql, null);
     }
 
     /**
@@ -197,7 +196,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             student.setStuBirthday(stuBirthday);
         }
         System.out.println("get stu success in helper,stu id="+student.getStuID());
-
+        cursor.close();
         return student;
     }
 
@@ -234,7 +233,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<Student> getAllData(ArrayList<Student> studentArrayList) {
         //可以改成HashMap
         db=getReadableDatabase();
-        /**
+        /*
          * 使用 adapter.notifyDataSetChanged() 时，必须保证传进 Adapter 的数据 List 是同一个 List
          * 而不能是其他对象，否则无法更新 listview。
          * 即，你可以调用 List 的 add()， remove()， clear()，addAll() 等方法，

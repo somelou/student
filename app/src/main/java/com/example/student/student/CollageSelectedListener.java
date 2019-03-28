@@ -15,6 +15,9 @@ import com.example.student.R;
  */
 public class CollageSelectedListener implements AdapterView.OnItemSelectedListener {
 
+    private static int count=0;
+    private static String TAG;
+
     private Spinner speciality;
     private ArrayAdapter<CharSequence> adapterSpeciality;
 
@@ -22,7 +25,8 @@ public class CollageSelectedListener implements AdapterView.OnItemSelectedListen
      *
      * @param spinner Spinner
      */
-    public CollageSelectedListener(Spinner spinner) {
+    public CollageSelectedListener(Spinner spinner,String tag) {
+        TAG=tag;
         setSpeciality(spinner);
     }
 
@@ -35,12 +39,18 @@ public class CollageSelectedListener implements AdapterView.OnItemSelectedListen
      */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String str = (String)(parent.getItemAtPosition(position));
-        //System.out.println("choosen:"+str);
-        if (str.equals(parent.getResources().getString(R.string.speciality_cs))) {
-            loadSpinnerSpecialityCS(parent);
-        }else if(str.equals((parent.getResources().getString(R.string.speciality_eg)))){
-            loadSpinnerSpecialityEG(parent);
+        if(TAG==null||TAG.equals("UPDATE")){
+            TAG="ADD";
+            return;
+        }
+        if(TAG.equals("ADD")) {
+            String str = (String) (parent.getItemAtPosition(position));
+            //System.out.println("choosen:"+str);
+            if (str.equals(parent.getResources().getString(R.string.speciality_cs))) {
+                loadSpinnerSpecialityCS(parent);
+            } else if (str.equals((parent.getResources().getString(R.string.speciality_eg)))) {
+                loadSpinnerSpecialityEG(parent);
+            }
         }
     }
 
@@ -55,6 +65,10 @@ public class CollageSelectedListener implements AdapterView.OnItemSelectedListen
      */
     private void setSpeciality(Spinner spinner) {
         speciality = spinner;
+    }
+
+    public static String getTAG(){
+        return TAG;
     }
 
     /**

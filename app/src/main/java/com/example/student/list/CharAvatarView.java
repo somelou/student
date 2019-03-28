@@ -63,7 +63,7 @@ public class CharAvatarView extends AppCompatImageView {
 
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (null != text) {
+        if (text!=null) {
             int color = colors[charHash % colors.length];
             // 画圆
             mPaintBackground.setColor(color);
@@ -87,8 +87,11 @@ public class CharAvatarView extends AppCompatImageView {
      * 只会取内容的第一个字符,如果是字母转换成大写
      */
     public void setText(String content) {
-        if (content == null) {
+        if(content==null){
             throw new NullPointerException("字符串内容不能为空");
+        }
+        if (content.equals("")) {
+            content="N";
         }
         this.text = String.valueOf(content.toCharArray()[0]);
         this.text = text.toUpperCase();
