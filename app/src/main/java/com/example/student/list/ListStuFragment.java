@@ -104,7 +104,7 @@ public class ListStuFragment extends Fragment {
     public View onCreateView(@Nullable LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
+        // Inflate the layout-port for this fragment
         assert inflater != null;
         return inflater.inflate(R.layout.fragment_list_stu, container, false);
     }
