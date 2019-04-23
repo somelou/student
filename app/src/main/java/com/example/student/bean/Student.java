@@ -3,12 +3,14 @@ package com.example.student.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * @description student bean
  * @author somelou
  * @date 2019/3/20
  */
-public class Student implements Parcelable {
+public class Student implements Parcelable, Serializable {
 
     private long stuID;
     private String stuName;

@@ -31,7 +31,7 @@ public class AdActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ad);
-        initView();
+        initAdView();
 
         handler = new Handler(){
             public void handleMessage(Message msg){
@@ -71,7 +71,7 @@ public class AdActivity extends AppCompatActivity {
 
     private void Countdown() {
 
-        //初始倒计时3秒
+        //初始倒计时5秒
         i = 5;
 
         //定时器
@@ -88,7 +88,7 @@ public class AdActivity extends AppCompatActivity {
         timer.schedule(task,1,1000);
     }
 
-    private void initView() {
+    private void initAdView() {
         go = findViewById(R.id.go);
     }
 }

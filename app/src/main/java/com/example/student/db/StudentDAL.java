@@ -1,12 +1,10 @@
-package com.example.student.util;
+package com.example.student.db;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
-import android.widget.Toast;
 
 import com.example.student.bean.Student;
 
@@ -15,74 +13,18 @@ import java.util.ArrayList;
 import es.dmoral.toasty.Toasty;
 
 /**
- * @description 数据库协助
  * @author somelou
- * @date 2019/3/20
+ * @description
+ * @date 2019-04-22
  */
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class StudentDAL {
 
-    /**
-     * 声明一个AndroidSDK自带的数据库变量db
-     */
+    private DatabaseHelper databaseHelper;
     private SQLiteDatabase db;
-    private Context parent;
 
-    private static String name = "student.db";
-    private static int dbDefaultVersion = 1;
 
-    /**
-     * 学生信息表
-     */
-    private final static String CREATE_STUDENT_TABLE = "create table if not exists stu("
-            + "stuid long primary key,"
-            + "name TEXT,"
-            + "fender TEXT,"
-            + "collage TEXT,"
-            + "speciality TEXT,"
-            + "hobby TEXT,"
-            + "birthday DATE,"
-            + "pic BLOB);";
-
-    //登录用户表
-    private final static String CREATE_USER_TABLE = "create table if not exists user("
-            + "userid long primary key,"
-            + "name TEXT,"
-            + "pswd TEXT,"
-            + "token TEXT);";
-
-    /**
-     * 写一个这个类的构造函数，参数为上下文context，所谓上下文就是这个类所在包的路径
-     * 指明上下文，数据库名，工厂默认空值，版本号默认从1开始
-     * super(context,"db_test",null,1);
-     * 把数据库设置成可写入状态，除非内存已满，那时候会自动设置为只读模式
-     * db = getReadableDatabase();
-     * @param context Context
-     */
-    public DatabaseHelper(Context context) {
-        super(context, name, null, dbDefaultVersion);
-        //db=getWritableDatabase();
-        parent = context;
-    }
-
-    /**
-     * 只在创建的时候使用一次
-     * 重写两个必须要重写的方法，因为class DBOpenHelper extends SQLiteOpenHelper
-     * 而这两个方法是 abstract 类 SQLiteOpenHelper 中声明的 abstract 方法
-     * @param db SQLiteDatabase
-     */
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        //db.execSQL(CREATE_USER_TABLE);
-        //db = getWritableDatabase();
-        db.execSQL(CREATE_STUDENT_TABLE);
-        db.execSQL(CREATE_USER_TABLE);
-        Toasty.success(parent, "成功创建Database&Table", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //db.execSQL("drop table if exists student");
-        //onCreate(db);
+    public StudentDAL(Context context){
+        databaseHelper=new DatabaseHelper(context);
     }
 
     /**
@@ -95,8 +37,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param hobby String
      * @param birthday String
      */
-    public void insertStudentInfo(long id,String name, String fender,String collage,String speciality,String hobby,String birthday) throws SQLException{
-        db=getWritableDatabase();
+    public void insertStudentInfo(long id,String name, String fender,String collage,String speciality,String hobby,String birthday) throws SQLException {
+        db=databaseHelper.getWritableDatabase();
         String sql="INSERT INTO STU VALUES (?,?,?,?,?,?,?,null)";
 
         SQLiteStatement statement=db.compileStatement(sql);
@@ -120,7 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return Cursor
      */
     private Cursor getData(String sql) throws SQLException{
-        return getReadableDatabase().rawQuery(sql, null);
+        return databaseHelper.getReadableDatabase().rawQuery(sql, null);
     }
 
     /**
@@ -128,7 +70,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param id long
      */
     public void deleteStudentInfo(long id) throws SQLException{
-        db=getWritableDatabase();
+        db=databaseHelper.getWritableDatabase();
 
         String sql = "DELETE FROM STU WHERE stuid = ?";
         SQLiteStatement statement = db.compileStatement(sql);
@@ -150,7 +92,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param birthday String
      */
     public void updateStudentInfo(long id, String name, String fender, String collage, String speciality, String hobby,String birthday) throws SQLException{
-        db = getWritableDatabase();
+        db = databaseHelper.getWritableDatabase();
 
         String sql = "UPDATE STU SET name = ?, fender = ?, collage = ?, speciality=?,hobby=? ,birthday=? WHERE stuid = ?";
         SQLiteStatement statement = db.compileStatement(sql);
@@ -206,8 +148,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param query String
      * @return list
      */
-    public ArrayList<Student> getQueryData(ArrayList<Student> studentArrayList,String query){
-        db=getReadableDatabase();
+    public ArrayList<Student> getQueryData(ArrayList<Student> studentArrayList, String query){
+        db=databaseHelper.getReadableDatabase();
         Cursor cursor = getData("select * from stu where name like '%"+query+"%' or "+"collage like '%"+query+"%' or "+"speciality like '%"+query+"%'");
         //让游标从表头游到表尾,并把数据存放到list中
         while (cursor.moveToNext()) {
@@ -232,7 +174,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     public ArrayList<Student> getAllData(ArrayList<Student> studentArrayList) {
         //可以改成HashMap
-        db=getReadableDatabase();
+        db=databaseHelper.getReadableDatabase();
+        System.out.println("db version:"+db.getVersion());
+        //db.setVersion(2);
         /*
          * 使用 adapter.notifyDataSetChanged() 时，必须保证传进 Adapter 的数据 List 是同一个 List
          * 而不能是其他对象，否则无法更新 listview。
@@ -250,12 +194,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String stuName = cursor.getString(cursor.getColumnIndex("name"));
             String stuCollage = cursor.getString(cursor.getColumnIndex("collage"));
             String stuSpeciality = cursor.getString(cursor.getColumnIndex("speciality"));
-            System.out.println("get name:"+stuName+",stuid:"+stuID);
+            System.out.println("get name:"+stuName+",stuid:"+stuID+"，version:"+cursor.getString(cursor.getColumnIndex("second")));
             //byte[] stuPic = cursor.getBlob(cursor.getColumnIndex("pic"));
             studentArrayList.add(new Student(stuID, stuName, stuCollage, stuSpeciality));
         }
         cursor.close();
         return studentArrayList;
     }
-
 }

@@ -3,15 +3,9 @@ package com.example.student.student;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.database.SQLException;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +21,7 @@ import android.widget.Toast;
 import com.example.student.MainActivity;
 import com.example.student.R;
 import com.example.student.bean.Student;
-import com.example.student.util.DatabaseHelper;
+import com.example.student.db.StudentDAL;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,7 +37,6 @@ import static java.lang.String.valueOf;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link StudentFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link StudentFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -56,22 +49,21 @@ public class StudentFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String day;
 
-    private DatabaseHelper dbHelper;
+    private StudentDAL dbHelper;
 
     String TAG;
 
-    EditText editName, editID, editBirthday;
-    RadioGroup radioFender;
+    private EditText editName, editID, editBirthday;
+    private RadioGroup radioFender;
     RadioButton male, female;
-    Spinner spinnerCollage, spinnerSpeciality;
+    private Spinner spinnerCollage, spinnerSpeciality;
     CheckBox[] checkBox;
-    List<CheckBox> checkBoxList = new ArrayList<CheckBox>();
-    Button btnSubmit, btnCancel;
+    private List<CheckBox> checkBoxList = new ArrayList<CheckBox>();
+    private Button btnSubmit, btnCancel;
 
     String fender;
-    GiveBackByValue giveBackByValue;
 
-    private OnFragmentInteractionListener mListener;
+    GiveBackByValue giveBackByValue;
 
     public StudentFragment() {
         // Required empty public constructor
@@ -107,21 +99,14 @@ public class StudentFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout-port for this fragment
-        View view= inflater.inflate(R.layout.fragment_student, container, false);
-        int orientation = getResources().getConfiguration().orientation;
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            view = inflater.inflate(R.layout.fragment_student, container, false);
-        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            view = inflater.inflate(R.layout.fragment_student, container, false);
-        }
-        //View view = inflater.inflate(R.layout.fragment_student, container, false);
+        View view = inflater.inflate(R.layout.fragment_student, container, false);
         initStudent(view);
         fromWhichAction();
         return view;
     }
 
     @Override
-    public void onViewCreated(@NonNull final View view, Bundle savedInstanceState) throws NumberFormatException{
+    public void onViewCreated(@NonNull final View view, Bundle savedInstanceState) throws NumberFormatException {
 
         //点击跳出DatePickerDialog
         editBirthday.setOnClickListener(new View.OnClickListener() {
@@ -176,7 +161,7 @@ public class StudentFragment extends Fragment {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean success=true;
+                boolean success = true;
                 //编辑
                 if (TAG.equals("UPDATE")) {
                     try {
@@ -190,9 +175,9 @@ public class StudentFragment extends Fragment {
                                 editBirthday.getText().toString().trim()
                         );
                     } catch (NumberFormatException e) {
-                        success=false;
+                        success = false;
                     }
-                    isOperationSuccess(success,TAG);
+                    isOperationSuccess(success, TAG);
                 } else
                     //添加
                     if (TAG.equals("ADD")) {
@@ -207,9 +192,9 @@ public class StudentFragment extends Fragment {
                                     editBirthday.getText().toString().trim()
                             );
                         } catch (NumberFormatException e) {
-                            success=false;
+                            success = false;
                         }
-                        isOperationSuccess(success,TAG);
+                        isOperationSuccess(success, TAG);
                     }
             }
         });
@@ -222,7 +207,7 @@ public class StudentFragment extends Fragment {
      */
     private void initStudent(View view) {
 
-        dbHelper = new DatabaseHelper(view.getContext());
+        dbHelper = new StudentDAL(view.getContext());
         giveBackByValue = new GiveBackByValue();
 
         editName = view.findViewById(R.id.editStuName);
@@ -249,29 +234,29 @@ public class StudentFragment extends Fragment {
         btnCancel = view.findViewById(R.id.buttonCancel);
         btnSubmit = view.findViewById(R.id.buttonSubmit);
     }
+
     /**
      * 判断动作来源，并产生对应反应
      */
     private void fromWhichAction() {
-        System.out.println("TAG :"+TAG);
+        System.out.println("TAG :" + TAG);
 
         Student student = ((MainActivity) Objects.requireNonNull(getActivity())).getStudentToUpdate();
-            if (student != null) {
-                System.out.println("(on resume)get stu from activity in update, name:" + student.getStuName());
-            }
-
+        if (student != null) {
+            System.out.println("(on resume)get stu from activity in update, name:" + student.getStuName());
+        }
 
         //如果接受的参数不为空，说明来自addButton
         if (student != null) {
             TAG = "UPDATE";
-            spinnerCollage.setOnItemSelectedListener(new CollageSelectedListener(spinnerSpeciality,TAG));
+            spinnerCollage.setOnItemSelectedListener(new CollageSelectedListener(spinnerSpeciality, TAG));
             initUpdateValue(student);
-            this.TAG=CollageSelectedListener.getTAG();
+            this.TAG = CollageSelectedListener.getTAG();
             //System.out.println("in update activity, stu id=" + student.getStuID());
         } else {
             System.out.println("no student info in student fragment");
             TAG = "ADD";
-            spinnerCollage.setOnItemSelectedListener(new CollageSelectedListener(spinnerSpeciality,TAG));
+            spinnerCollage.setOnItemSelectedListener(new CollageSelectedListener(spinnerSpeciality, TAG));
             //reSetOriginalView();
         }
     }
@@ -317,17 +302,18 @@ public class StudentFragment extends Fragment {
 
     /**
      * 判断操作是否成功并生成相应吐司
+     *
      * @param success boolean
-     * @param tag TAG
+     * @param tag     TAG
      */
-    private void isOperationSuccess(boolean success,String tag){
-        if(success){
-            Toasty.success(Objects.requireNonNull(getContext()), tag+"successfully!", Toast.LENGTH_SHORT, true).show();
+    private void isOperationSuccess(boolean success, String tag) {
+        if (success) {
+            Toasty.success(Objects.requireNonNull(getContext()), tag + "successfully!", Toast.LENGTH_SHORT, true).show();
             //Toast.makeText(getApplicationContext(), "Update successfully!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getContext(), MainActivity.class);
             startActivity(intent);
-        }else {
-            Toasty.error(Objects.requireNonNull(getContext()), tag+"出现了问题").show();
+        } else {
+            Toasty.error(Objects.requireNonNull(getContext()), tag + "出现了问题").show();
         }
     }
 
@@ -352,46 +338,14 @@ public class StudentFragment extends Fragment {
         return hobby.toString();
     }
 
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        //callBackValue= (CallBackValue) getActivity();
-
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 
     @Override

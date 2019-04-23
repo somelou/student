@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.student">
 
+    <uses-permission android:name="android.permission.INTERNET">
+
+    </uses-permission>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,12 +13,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:networkSecurityConfig="@xml/network_security_config"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".phone.PhonePlaceActivity"
+            android:exported="true">
+
+        </activity>
         <activity android:name=".MainActivity">
 
         </activity>
-        <activity android:name=".ad.AdActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".ad.AdActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".list.QueryActivity" />
         <activity android:name=".login.LoginActivity">
             <intent-filter>

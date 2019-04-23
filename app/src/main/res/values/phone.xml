@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_phone">手机号码</string>
+    <string name="text_place">归属地</string>
+
+    <string name="hint_phone">请输入你的手机号码</string>
+    <string name="hint_place">查询到的归属地</string>
+
+    <string name="button_query_place">查询</string>
+</resources>

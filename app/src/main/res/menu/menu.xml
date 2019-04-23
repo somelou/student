@@ -3,11 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_add_stu"
+        android:id="@+id/menu_query_stu"
         android:title="@string/button_query_stu"
         app:showAsAction="never" />
     <item
         android:id="@+id/menu_refresh_stu"
         android:title="@string/menu_refresh"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_phone_place"
+        android:title="@string/menu_phone"
         app:showAsAction="never" />
 </menu>

@@ -2,7 +2,7 @@ package com.example.student;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.res.Configuration;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -25,15 +25,17 @@ import android.widget.Toast;
 import com.example.student.bean.Student;
 import com.example.student.list.ListStuFragment;
 import com.example.student.my.MyFragment;
-import com.example.student.student.CallBackValue;
+import com.example.student.phone.PhonePlaceActivity;
+import com.example.student.util.CallBackValue;
 import com.example.student.student.StudentFragment;
-import com.example.student.widget.ViewPagerAdapter;
+import com.example.student.adapter.ViewPagerAdapter;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements ListStuFragment.OnFragmentInteractionListener, StudentFragment.OnFragmentInteractionListener, MyFragment.OnFragmentInteractionListener, CallBackValue {
+public class MainActivity extends AppCompatActivity implements CallBackValue {
 
     public static final String RESULT_QUERY = "QUERY";
     public static final String RESULT_ALL = "ALL";
@@ -43,23 +45,22 @@ public class MainActivity extends AppCompatActivity implements ListStuFragment.O
     private MenuItem menuItem;
     private BottomNavigationView bottomNavigationView;
 
-    String birthday;
+    String birthday;//  其实没什么用的值
     Student student;
 
     String updateKind, condition;
+    Map<String, String> map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int orientation = getResources().getConfiguration().orientation;
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            setContentView(R.layout.activity_main);
-        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            setContentView(R.layout.activity_main);
-        }
+
+        setContentView(R.layout.activity_main);
+
 
         viewPager = findViewById(R.id.viewpager);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+        //新版本的sdk好像已经解决了这个问题
         //默认 >3 的选中效果会影响ViewPager的滑动切换时的效果，故利用反射去掉
         //BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -96,6 +97,10 @@ public class MainActivity extends AppCompatActivity implements ListStuFragment.O
                 }
                 menuItem = bottomNavigationView.getMenu().getItem(position);
                 menuItem.setChecked(true);
+//                FragmentManager fm = getSupportFragmentManager();
+//
+//                // fm.getFragments(),当点了第三页时，再回来，返回值的内容就不同了，ListStuFragment和StudentFragment的顺序发生了改变
+//                List<Fragment> fragments = fm.getFragments();
             }
 
             @Override
@@ -110,17 +115,10 @@ public class MainActivity extends AppCompatActivity implements ListStuFragment.O
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(ListStuFragment.newInstance("1", "2"));
+        adapter.addFragment(ListStuFragment.newInstance("1"));
         adapter.addFragment(StudentFragment.newInstance(birthday));
-        adapter.addFragment(MyFragment.newInstance("1", "2"));
+        adapter.addFragment(MyFragment.newInstance("1"));
         viewPager.setAdapter(adapter);
-    }
-
-
-    //该方法主要是从fragment 向activity传递数据
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 
     /**
@@ -181,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements ListStuFragment.O
         // set height for dialog
         int height = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.3);
         dialog.setTitle("Query");
-        dialog.getWindow().setLayout(width, height);
+        Objects.requireNonNull(dialog.getWindow()).setLayout(width, height);
         dialog.show();
 
         //确定按钮
@@ -191,10 +189,11 @@ public class MainActivity extends AppCompatActivity implements ListStuFragment.O
                 try {
                     //执行查询
                     condition = queryInput.getText().toString();
-                    makeFragmentRefresh(0);
-                    //updateStuListData(RESULT_QUERY, queryInput.getText().toString());
                     //关闭dialog
                     dialog.dismiss();
+                    makeFragmentRefresh(0);
+                    //updateStuListData(RESULT_QUERY, queryInput.getText().toString());
+
 
                 } catch (Exception error) {
                     Log.e("Query error", error.getMessage());
@@ -219,11 +218,11 @@ public class MainActivity extends AppCompatActivity implements ListStuFragment.O
 
         int menuItemId = item.getItemId();
         switch (menuItemId) {
-            case R.id.menu_add_stu:
+            case R.id.menu_query_stu:
                 updateKind = RESULT_QUERY;
                 showDialogQuery(this);
                 //turnToAddStuInfo(findViewById(R.id.menu_add_stu));
-                System.out.println("=====add====");
+                System.out.println("=====query====");
                 break;
             case R.id.menu_refresh_stu:
                 updateKind = RESULT_ALL;
@@ -232,6 +231,8 @@ public class MainActivity extends AppCompatActivity implements ListStuFragment.O
                 //updateStuListData(RESULT_ALL, null);
                 System.out.println("====refresh=======");
                 break;
+            case R.id.menu_phone_place:
+                turnToPhonePlace(findViewById(R.id.menu_phone_place));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -247,10 +248,23 @@ public class MainActivity extends AppCompatActivity implements ListStuFragment.O
         this.student = student;
         System.out.println("get student from list stu fragment name:" + student.getStuName());
         makeFragmentRefresh(pageNum);
-        this.student=null;
+        this.student = null;
+    }
+
+    @Override
+    public void SendQueryValue(Map<String, String> map, int pageNum) {
+        this.map = map;
+        makeFragmentRefresh(pageNum);
+        this.map = null;
     }
 
 
+    /**
+     * 返回MainActivity中对应的student
+     * studentFragment需要
+     *
+     * @return
+     */
     public Student getStudentToUpdate() {
         if (student != null) {
             System.out.println("in return stu to update,name:" + student.getStuName());
@@ -258,6 +272,12 @@ public class MainActivity extends AppCompatActivity implements ListStuFragment.O
         return student;
     }
 
+    /**
+     * 返回MainActivity中对应的查询信息
+     * listStuFragment需要
+     *
+     * @return
+     */
     public Map<String, String> getListConditionToList() {
         Map<String, String> map = new HashMap<>();
         map.put("kind", updateKind);
@@ -266,14 +286,27 @@ public class MainActivity extends AppCompatActivity implements ListStuFragment.O
     }
 
 
+    /**
+     * 相当于刷新pageNum对应的页面，使得其能获得MainActivity中对应的值
+     *
+     * @param pageNum
+     */
     private void makeFragmentRefresh(int pageNum) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
+
+        // fm.getFragments(),当点了第三页时，再回来，返回值的内容就不同了，ListStuFragment和StudentFragment的顺序发生了改变
         List<Fragment> fragments = fm.getFragments();
+        Log.d("Fragment", fragments.get(pageNum).toString());
         fragments.get(pageNum).onResume();
         ft.commit();
         viewPager.setCurrentItem(pageNum);
     }
 
+
+    public void turnToPhonePlace(View view) {
+        Intent intent = new Intent(this, PhonePlaceActivity.class);
+        startActivity(intent);
+    }
 
 }

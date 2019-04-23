@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.example.student.MainActivity;
 import com.example.student.R;
 import com.example.student.ad.AdActivity;
-import com.example.student.my.Base64Utils;
 import com.example.student.util.SharedPreferencesUtils;
 
 import es.dmoral.toasty.Toasty;

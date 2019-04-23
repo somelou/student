@@ -1,6 +1,8 @@
-package com.example.student.student;
+package com.example.student.util;
 
 import com.example.student.bean.Student;
+
+import java.util.Map;
 
 /**
  * @author somelou
@@ -9,4 +11,6 @@ import com.example.student.bean.Student;
  */
 public interface CallBackValue {
     void SendValueFromStudentMessage(Student student, int pageNum);
+
+    void SendQueryValue(Map<String,String> map,int pageNum);
 }
